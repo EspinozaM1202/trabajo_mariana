@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+//modelos del proyecto
+model brand{
+  id_brand Int @id @default(autoincrement())
+  name     String @db.VarChar(60)
+  cars     car[]
+}
+
+model car{
+  id Int @id @default(autoincrement())
+  plate String @db.VarChar(6)
+  release_date DateTime @db.Date
+  is_available Boolean @default(true)
+  price Decimal @db.Decimal(10,2)
+  //Campo llave foranea
+  brand_id Int 
+  //Relacion con brand
+  brand brand @relation(fields: [brand_id], references: [id_brand])
+}
+
+model vendor{
+  id_vendor Int @id @default(autoincrement())
+  name String @db.VarChar(60)
+  phone String @db.VarChar(10)
+}
+model cliente{
+  id_cliente Int @id @default(autoincrement())
+  nombre String @db.VarChar(60)
+  email String @db.VarChar(60)
+  password String @db.VarChar(64)
+}
+model factura{
+  id_factura Int @id @default(autoincrement())
+  fecha DateTime @db.Date
+  total Decimal @db.Decimal(10,2)
+}
+ 
+ model product{
+  id_product Int @id @default(autoincrement())
+  name String @db.VarChar(60)
+  description String @db.VarChar(200)
+  price Decimal @db.Decimal(10,2)
+
+ }
